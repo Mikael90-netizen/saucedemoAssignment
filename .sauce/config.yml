@@ -1,0 +1,36 @@
+# saucectl config: runs this Playwright suite on Sauce Labs cloud VMs.
+# Requires SAUCE_USERNAME and SAUCE_ACCESS_KEY env vars. Run with: npx saucectl run
+apiVersion: v1alpha
+kind: playwright
+sauce:
+  region: eu-central-1
+  concurrency: 3
+  metadata:
+    tags:
+      - e2e
+      - saucedemo
+playwright:
+  version: package.json
+  configFile: playwright.config.ts
+rootDir: ./
+suites:
+  - name: "Chromium on Windows 11"
+    platformName: "Windows 11"
+    screenResolution: "1920x1080"
+    testMatch: ['.*\.spec\.ts']
+    params:
+      browserName: "chromium"
+      project: "chromium"
+  - name: "Firefox on Windows 11"
+    platformName: "Windows 11"
+    screenResolution: "1920x1080"
+    testMatch: ['.*\.spec\.ts']
+    params:
+      browserName: "firefox"
+      project: "firefox"
+artifacts:
+  download:
+    when: always
+    match:
+      - "*"
+    directory: ./artifacts/
